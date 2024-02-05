@@ -28,10 +28,13 @@ def compute_statistics(filename):
         # Calculamos las estadísticas descriptivas
         count = len(data)
         mean = sum(data) / count
-        median = statistics.median(data)
-        mode = statistics.mode(data)
-        stdev = statistics.stdev(data)
-        variance = statistics.variance(data)
+        sorted_data = sorted(data)
+        middle = count // 2
+        median = sorted_data[middle] if count % 2 != 0 else (sorted_data[middle - 1] + sorted_data[middle]) / 2
+        mode = max(set(data), key=data.count)
+        deviations = [(x - mean) ** 2 for x in data]
+        variance = sum(deviations) / count
+        stdev = variance ** 0.5
 
         with open('StatisticsResults.txt', 'w') as result_file:
             result_file.write(f"COUNT: {count}\n")
